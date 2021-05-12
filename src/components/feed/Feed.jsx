@@ -5,15 +5,21 @@ import Post from "../post/Post"
 import axios from "axios"
 
 
-export default function Feed() {
+export default function Feed({userId, type, section}) {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     const fetchPosts = async() => {
-      const response = await axios.post("http://home.local:9901/posts", {
-        type: 'Learner',
-        userId: 1,
+      const response = section === 'home'
+      ? await axios.post("http://home.local:9901/posts", {
+        type: type,
+        userId: userId,
         page: 1
-      });
+      }) 
+      : await axios.post("http://home.local:9901/posts", {
+        type: type,
+        userId: userId,
+        page: 1
+      }) ;
       setPosts(response.data.data)
     }
     fetchPosts();
@@ -22,8 +28,8 @@ export default function Feed() {
     <div className="feed">
       <div className="feedWrapper">
         <Share />
-        {posts.map((p, index) => (
-          <Post key={index} post={p} />
+        {posts.map((p) => (
+          <Post key={p.id} post={p} />
         ))}
       </div>
     </div>
