@@ -2,9 +2,23 @@ import "./profile.css";
 import Topbar from "../../components/topbar/Topbar";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 
 export default function Profile() {
-  const public_folder = process.env.REACT_APP_PUBLIC_FOLDER
+  const [user, setUser] = useState({})
+  const params = useParams();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await axios.get('http://profile.local:9902/user/' + params.type + '/' + params.userId)
+      if (response.data.success === true) {
+        setUser(response.data.user)
+      }
+    }
+    fetchUser()
+  }, [])
 
   return (
     <>
@@ -15,23 +29,23 @@ export default function Profile() {
             <div className="profileCover">
               <img
                 className="profileCoverImg"
-                src= {public_folder + "post/3.jpeg"}
+                src={user.coverImg}
                 alt=""
               />
               <img
                 className="profileUserImg"
-                src={public_folder + "/person/7.jpeg"}
+                src={user.profileImg}
                 alt=""
               />
             </div>
             <div className="profileInfo">
-                <h4 className="profileInfoName">Safak Kocaoglu</h4>
-                <span className="profileInfoDesc">Hello my friends!</span>
+              <h4 className="profileInfoName">{user.hasOwnProperty('firstName') ? user.firstName + " " + user.lastName: ''}</h4>
+              <span className="profileInfoDesc">{user.hasOwnProperty('description')  ? user.description: ''}</span>
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed userId = '1' type = 'Learner' section = 'profile'/>
-            <Rightbar profile/>
+            <Feed userId={params.userId} type={params.type} section='profile' />
+            <Rightbar user={user} type={params.type} />
           </div>
         </div>
       </div>

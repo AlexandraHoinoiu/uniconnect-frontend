@@ -1,8 +1,17 @@
 import "./topbar.css"
 import { Person, Search, Chat, Notifications } from "@material-ui/icons"
 import {Link} from "react-router-dom"
+import {useContext} from "react"
+import { AuthContext } from "../../context/AuthContext"
 
 export default function Topbar() {
+
+    const {user} = useContext(AuthContext)
+
+    const logout = () => {
+        localStorage.clear();
+        window.location.reload()
+    }
     return (
         <div className="topbarContainer">
             <div className="topbarLeft">
@@ -12,15 +21,17 @@ export default function Topbar() {
             </div>
             <div className="topbarCenter">
                 <div className="searchbar">
-                    <Search className="searchIcon" />                    <input placeholder="Search a friend or a school" className="searchInput" />
+                    <Search className="searchIcon" />                    
+                    <input placeholder="Search a friend or a school" className="searchInput" />
                 </div>
             </div>
             <div className="topbarRight">
                 <div className="topBarLinks">
+                    <Link to="/" style={{ textDecoration: 'none' }}>
                     <span className="topbarLink">Homepage</span>
-                    <span className="topbarLink">Timeline</span>
+                    </Link>
                 </div>
-                <div className="topbarIcons">
+                {/* <div className="topbarIcons">
                     <div className="topbarIconItem">
                         <Person />
                         <span className="topbarIconBadge">1</span>
@@ -33,9 +44,12 @@ export default function Topbar() {
                         <Notifications />
                         <span className="topbarIconBadge">1</span>
                     </div>
-                </div>
-                <img src="/assets/1.jpg" alt="" className="topbarImg" />
+                </div> */}
+                <Link to={`/profile/${user.type}/${user.id}`}>
+                <img src={user.profileImg} alt="" className="topbarImg" />
+                </Link>
             </div>
+            <a className="logoutLink" onClick={logout}>Logout</a>
         </div>
     )
 }

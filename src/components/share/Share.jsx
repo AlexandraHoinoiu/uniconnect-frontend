@@ -1,39 +1,69 @@
 import "./share.css";
 import {PermMedia, Label,Room, EmojiEmotions} from "@material-ui/icons"
+import { useContext, useRef, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 export default function Share() {
+
+  const {user} = useContext(AuthContext)
+  const text = useRef()
+  const [file, setFile] = useState([])
+  const [fileName, setFileName] = useState([])
+
+  const getBase64 = (e) => {
+    var file = e.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    setFileName(file.name)
+    reader.onload = () => {
+     setFile(reader.result)
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    }
+  }
+
+  const submit = async (e) => {
+    e.preventDefault()
+    const newPost = {
+      type: user.type,
+      userId: user.id,
+      text: text.current.value
+    }
+    if(file) {
+      newPost.dataFile = file;
+      newPost.fileName = fileName;
+    }
+    try{
+      const response = await axios.post("http://home.local:9901/createPost", newPost)
+      window.location.reload()
+    } catch(err) {
+
+    }
+  }
   return (
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
-          <img className="shareProfileImg" src="/assets/person/1.jpeg" alt="" />
+          <img className="shareProfileImg" src={user.profileImg} alt="" />
           <input
-            placeholder="What's in your mind Safak?"
+            placeholder="Share something with your followers"
             className="shareInput"
+            ref={text}
           />
         </div>
         <hr className="shareHr"/>
-        <div className="shareBottom">
+        <form className="shareBottom" onSubmit={submit}>
             <div className="shareOptions">
-                <div className="shareOption">
+                <label htmlFor="file" className="shareOption">
                     <PermMedia htmlColor="tomato" className="shareIcon"/>
-                    <span className="shareOptionText">Photo or Video</span>
-                </div>
-                <div className="shareOption">
-                    <Label htmlColor="blue" className="shareIcon"/>
-                    <span className="shareOptionText">Tag</span>
-                </div>
-                <div className="shareOption">
-                    <Room htmlColor="green" className="shareIcon"/>
-                    <span className="shareOptionText">Location</span>
-                </div>
-                <div className="shareOption">
-                    <EmojiEmotions htmlColor="goldenrod" className="shareIcon"/>
-                    <span className="shareOptionText">Feelings</span>
-                </div>
+                    <span className="shareOptionText">Photo</span>
+                    <input type="file" style={{display:"none"}} id="file" accept=".png,.jpeg,.jpg" onChange={getBase64}/>
+                </label>
             </div>
-            <button className="shareButton">Share</button>
-        </div>
+            <button className="shareButton" type="submit">Share</button>
+        </form>
       </div>
     </div>
   );

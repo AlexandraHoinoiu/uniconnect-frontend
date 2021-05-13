@@ -1,21 +1,40 @@
 import "./rightbar.css";
 import { Users } from "../../dummyData";
 import Online from "../online/Online";
+import { useParams } from "react-router";
+import { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom"
+import axios from "axios"
 
-export default function Rightbar({ profile }) {
+
+export default function Rightbar() {
   const public_folder = process.env.REACT_APP_PUBLIC_FOLDER
+  const params = useParams();
+  const [friends, setFriends] = useState([]);
+  const { user } = useContext(AuthContext)
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      const response = await axios.get(`http://profile.local:9902/user-following/${user.type}/${user.id}`);
+      if (response.data.success === true) {
+        setFriends(response.data.users)
+      }
+    }
+    fetchFriends();
+  }, []);
 
   const HomeRightbar = () => {
     return (
       <>
-        <div className="birthdayContainer">
+        {/* <div className="birthdayContainer">
           <img className="birthdayImg" src={public_folder + "gift.png"} alt="" />
           <span className="birthdayText">
             <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
           </span>
-        </div>
+        </div> */}
         <img className="rightbarAd" src={public_folder + "ad.png"} alt="" />
-        <h4 className="rightbarTitle">Online Friends</h4>
+        <h4 className="rightbarTitle">Suggestions for you</h4>
         <ul className="rightbarFriendList">
           {Users.map((u) => (
             <Online key={u.id} user={u} />
@@ -31,68 +50,28 @@ export default function Rightbar({ profile }) {
         <h4 className="rightbarTitle">User information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">City:</span>
-            <span className="rightbarInfoValue">New York</span>
+            <span className="rightbarInfoKey">Country/State:</span>
+            <span className="rightbarInfoValue">{user.country}</span>
           </div>
           <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">From:</span>
-            <span className="rightbarInfoValue">Madrid</span>
-          </div>
-          <div className="rightbarInfoItem">
-            <span className="rightbarInfoKey">Relationship:</span>
-            <span className="rightbarInfoValue">Single</span>
+            <span className="rightbarInfoKey">City</span>
+            <span className="rightbarInfoValue">{user.city}</span>
           </div>
         </div>
-        <h4 className="rightbarTitle">User friends</h4>
+        <h4 className="rightbarTitle">Following</h4>
         <div className="rightbarFollowings">
-          <div className="rightbarFollowing">
-            <img
-              src={public_folder + "person/1.jpeg"}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={public_folder + "person/2.jpeg"}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={public_folder + "person/3.jpeg"}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={public_folder + "person/4.jpeg"}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={public_folder + "person/5.jpeg"}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
-          <div className="rightbarFollowing">
-            <img
-              src={public_folder + "person/6.jpeg"}
-              alt=""
-              className="rightbarFollowingImg"
-            />
-            <span className="rightbarFollowingName">John Carter</span>
-          </div>
+          {friends.map((friend) => (
+            <div className="rightbarFollowing">
+               <Link to={`profile/${friend.type}/${friend.id}`}>
+                <img
+                  src={friend.profileImg}
+                  alt=""
+                  className="rightbarFollowingImg"
+                />
+               </Link>
+              <span className="rightbarFollowingName">{friend.firstName + " " + friend.lastName}</span>
+            </div>
+          ))}
         </div>
       </>
     );
@@ -100,7 +79,7 @@ export default function Rightbar({ profile }) {
   return (
     <div className="rightbar">
       <div className="rightbarWrapper">
-        {profile ? <ProfileRightbar /> : <HomeRightbar />}
+        {params.type ? <ProfileRightbar /> : <HomeRightbar />}
       </div>
     </div>
   );

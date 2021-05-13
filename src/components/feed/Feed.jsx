@@ -15,7 +15,7 @@ export default function Feed({userId, type, section}) {
         userId: userId,
         page: 1
       }) 
-      : await axios.post("http://home.local:9901/posts", {
+      : await axios.post("http://profile.local:9902/posts", {
         type: type,
         userId: userId,
         page: 1
