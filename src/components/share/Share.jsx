@@ -24,6 +24,26 @@ export default function Share() {
     }
   }
 
+  const handleFileRead = async (event) => {
+    const file = event.target.files[0]
+    setFileName(file.name)
+    const base64 = await convertBase64(file)
+    setFile(base64)
+  }
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file)
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      }
+      fileReader.onerror = (error) => {
+        reject(error);
+      }
+    })
+  }
+
   const submit = async (e) => {
     e.preventDefault()
     const newPost = {
@@ -36,7 +56,7 @@ export default function Share() {
       newPost.fileName = fileName;
     }
     try{
-      const response = await axios.post("http://home.local:9901/createPost", newPost)
+      const response = await axios.post("http://api.local:9901/createPost", newPost)
       window.location.reload()
     } catch(err) {
 
@@ -59,7 +79,7 @@ export default function Share() {
                 <label htmlFor="file" className="shareOption">
                     <PermMedia htmlColor="tomato" className="shareIcon"/>
                     <span className="shareOptionText">Photo</span>
-                    <input type="file" style={{display:"none"}} id="file" accept=".png,.jpeg,.jpg" onChange={getBase64}/>
+                    <input type="file" style={{display:"none"}} id="file" accept=".png,.jpeg,.jpg" onChange={handleFileRead}/>
                 </label>
             </div>
             <button className="shareButton" type="submit">Share</button>

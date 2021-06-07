@@ -12,7 +12,7 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get('http://profile.local:9902/user/' + params.type + '/' + params.userId)
+      const response = await axios.get('http://api.local:9902/user/' + params.type + '/' + params.userId)
       if (response.data.success === true) {
         setUser(response.data.user)
       }
@@ -39,7 +39,7 @@ export default function Profile() {
               />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.hasOwnProperty('firstName') ? user.firstName + " " + user.lastName: ''}</h4>
+              <h4 className="profileInfoName">{user.hasOwnProperty('firstName') ? user.firstName + " " + user.lastName: user.name}</h4>
               <span className="profileInfoDesc">{user.hasOwnProperty('description')  ? user.description: ''}</span>
             </div>
           </div>

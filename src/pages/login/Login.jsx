@@ -19,8 +19,12 @@ export default function Login() {
     const loginCall = async (userCredential, dispatch) => {
       dispatch({ type: "LOGIN_START" });
       try {
-        const res = await axios.post("http://home.local:9901/signIn", userCredential);
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data });
+        const res = await axios.post("http://api.local:9901/signIn", userCredential);
+        if(res.data.success === false) {
+          dispatch({ type: "LOGIN_FAILURE", payload: res.data.message });
+        } else {
+          dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data });
+        }
       } catch (err) {
         dispatch({ type: "LOGIN_FAILURE", payload: err });
       }

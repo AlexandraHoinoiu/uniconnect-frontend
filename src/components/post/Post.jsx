@@ -16,7 +16,7 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get("http://home.local:9901/post/user/" + post.id)
+      const response = await axios.get("http://api.local:9901/post/user/" + post.id)
       if (response.data.success === true) {
         setUser(response.data.user)
       }
@@ -26,12 +26,12 @@ export default function Post({ post }) {
 
   const likeHandler = async () => {
     if (!isLiked) {
-      const response = await axios.get("http://home.local:9901/like/" + post.id);
+      const response = await axios.get("http://api.local:9901/like/" + post.id);
       if (response.data.success === true) {
         setLikes(likes + 1)
       }
     } else {
-      const response = await axios.get("http://home.local:9901/remove-like/" + post.id);
+      const response = await axios.get("http://api.local:9901/remove-like/" + post.id);
       if (response.data.success === true) {
         setLikes(likes - 1)
       }

@@ -12,6 +12,11 @@ export default function Topbar() {
         localStorage.clear();
         window.location.reload()
     }
+    const refreshPage = () => {
+        setTimeout(()=>{
+            window.location.reload(false);
+        }, 200);
+    }
     return (
         <div className="topbarContainer">
             <div className="topbarLeft">
@@ -45,7 +50,7 @@ export default function Topbar() {
                         <span className="topbarIconBadge">1</span>
                     </div>
                 </div> */}
-                <Link to={`/profile/${user.type}/${user.id}`}>
+                <Link to={`/profile/${user.type}/${user.id}`} onClick={refreshPage}>
                 <img src={user.profileImg} alt="" className="topbarImg" />
                 </Link>
             </div>
