@@ -16,13 +16,17 @@ export default function Feed({userId, type, section}) {
         type: type,
         userId: userId,
         page: 1
-      }) 
+      }).catch(function (error){
+      })
       : await axios.post("http://api.local:9902/posts", {
         type: type,
         userId: userId,
         page: 1
-      }) ;
-      setPosts(response.data.data)
+      }).catch(function (error){
+      });
+      if(typeof response !== 'undefined'){
+        setPosts(response.data.data)
+      }
     }
     fetchPosts();
   }, []);

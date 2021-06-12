@@ -16,12 +16,11 @@
     cursor: pointer;
     margin-left: 20px;
     overflow: hidden;
-    height: 60px;
 }
 
 .logo img {
-    width:45%;
-    height: 100%;
+    width: min(20vw, 200px);
+    height: min(20vw, 60px);
 }
 
 .topbarCenter {

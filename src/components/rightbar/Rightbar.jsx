@@ -17,8 +17,10 @@ export default function Rightbar(currentUser) {
 
   useEffect(() => {
     const fetchFriends = async () => {
-      const response = await axios.get(`http://api.local:9902/user-following/${params.type}/${params.userId}`);
-      if (response.data.success === true) {
+      const response = await axios.get(`http://api.local:9902/user-following/${params.type}/${params.userId}`)
+      .catch(function (error){
+      });
+      if (typeof response !== 'undefined' && response.data.success === true) {
         setFriends(response.data.users)
       }
     }
@@ -33,8 +35,10 @@ export default function Rightbar(currentUser) {
       followerType: user.type,
       followedType: currentUser.type
 
+    })
+    .catch(function (error){
     });
-    if (response.data.success === true) {
+    if (typeof response !== 'undefined' && response.data.success === true) {
       if(response.data.followed === true) {
         setFollow('Unfollow')
       } else {
@@ -46,7 +50,7 @@ export default function Rightbar(currentUser) {
   const refreshPage = () => {
     setTimeout(() => {
       window.location.reload(false);
-    }, 200);
+    }, 100);
   }
 
   const followHandler = async () => {

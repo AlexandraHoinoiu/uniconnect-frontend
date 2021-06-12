@@ -10,25 +10,33 @@ export default function Share() {
   const text = useRef()
   const [file, setFile] = useState([])
   const [fileName, setFileName] = useState([])
+  const [photo, setPhoto] = useState([])
 
-  const getBase64 = (e) => {
-    var file = e.target.files[0]
-    let reader = new FileReader()
-    reader.readAsDataURL(file)
-    setFileName(file.name)
-    reader.onload = () => {
-     setFile(reader.result)
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    }
-  }
 
   const handleFileRead = async (event) => {
     const file = event.target.files[0]
     setFileName(file.name)
     const base64 = await convertBase64(file)
     setFile(base64)
+    displayPhoto(file.name, base64)
+  }
+
+  const displayPhoto = (name, img) => {
+    const html = 
+    <div>
+      <hr className="firstHr"/>
+      <div className="photoDisplay">
+        <button className="removePhoto" onClick={removePhoto}>X</button>{name}
+        <img className="photo" src={img} alt="img" />
+      </div>
+    </div>
+    setPhoto(html)
+  }
+
+  const removePhoto = () => {
+    setPhoto('')
+    setFileName('')
+    setFile(false)
   }
 
   const convertBase64 = (file) => {
@@ -73,6 +81,7 @@ export default function Share() {
             ref={text}
           />
         </div>
+        {photo}
         <hr className="shareHr"/>
         <form className="shareBottom" onSubmit={submit}>
             <div className="shareOptions">

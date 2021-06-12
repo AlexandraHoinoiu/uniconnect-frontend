@@ -12,8 +12,11 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get('http://api.local:9902/user/' + params.type + '/' + params.userId)
-      if (response.data.success === true) {
+      const response = 
+      await axios.get('http://api.local:9902/user/' + params.type + '/' + params.userId)
+      .catch(function (error){
+      });
+      if (typeof response !== 'undefined' && response.data.success === true) {
         setUser(response.data.user)
       }
     }
