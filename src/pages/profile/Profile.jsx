@@ -47,7 +47,7 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed userId={params.userId} type={params.type} section='profile' />
+            <Feed userId={parseInt(params.userId)} type={params.type} section='profile' />
             <Rightbar user={user} type={params.type} />
           </div>
         </div>

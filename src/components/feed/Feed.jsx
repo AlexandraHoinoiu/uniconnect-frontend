@@ -33,7 +33,7 @@ export default function Feed({userId, type, section}) {
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {user.id == userId ? <Share /> : ""}
+        {user.id === userId ? <Share /> : ""}
         {posts.map((p) => (
           <Post key={p.id} post={p} />
         ))}

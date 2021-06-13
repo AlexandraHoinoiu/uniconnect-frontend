@@ -105,7 +105,7 @@ export default function Rightbar(currentUser) {
     followCheck()
     return (
       <>
-        {(user.type != params.type || user.id != params.userId) ?
+        {(user.type !== params.type || user.id !== parseInt(params.userId)) ?
           <button className="followButton" onClick={followHandler}>{follow}</button> : ''
         }
         <h4 className="rightbarTitle">User information</h4>

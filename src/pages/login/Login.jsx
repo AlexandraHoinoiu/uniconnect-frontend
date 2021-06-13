@@ -12,7 +12,7 @@ export default function Login() {
   const anotherType = params.type === 'Learner' ? 'School' : 'Learner'
   const email = useRef()
   const password = useRef()
-  const {user, isFetching, error, dispatch } = useContext(AuthContext);
+  const {isFetching, dispatch } = useContext(AuthContext);
 
   const submit = (e) => {
     e.preventDefault();
