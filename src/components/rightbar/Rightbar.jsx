@@ -84,12 +84,6 @@ export default function Rightbar(currentUser) {
   const HomeRightbar = () => {
     return (
       <>
-        {/* <div className="birthdayContainer">
-          <img className="birthdayImg" src={public_folder + "gift.png"} alt="" />
-          <span className="birthdayText">
-            <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
-          </span>
-        </div> */}
         <img className="rightbarAd" src={public_folder + "ad.png"} alt="" />
         <h4 className="rightbarTitle">Suggestions for you</h4>
         <ul className="rightbarFriendList">

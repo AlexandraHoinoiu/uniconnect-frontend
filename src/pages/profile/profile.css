@@ -9,7 +9,7 @@
 .profileCover {
     height: 320px;
     position: relative;
-    z-index: -5;
+    /* z-index: -5; */
 }
 
 .profileCoverImg {
@@ -48,4 +48,10 @@
 
 .profileRightBottom {
     display: flex;
+}
+.photo {
+    margin-left: 5px;
+    width: 180px;
+    height: auto;
+    max-height: 250px;
 }
