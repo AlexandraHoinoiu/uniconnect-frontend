@@ -12,6 +12,42 @@
 .topbarLeft {
     flex: 3;
 }
+.moreProfile:focus {
+    background-color: rgba(228, 142, 30, 0);
+    border-color: rgba(240, 181, 105, 0);
+    color: rgb(49, 49, 212);
+}
+
+.moreProfile {
+    color: rgb(49, 49, 212);
+}
+
+.moreProfile.dropdown-toggle::after {
+    display: inline-block;
+}
+
+.moreProfile {
+    background-color: rgba(228, 142, 30, 0);
+    border-color: rgba(240, 181, 105, 0);
+    border-radius: 30%;
+}
+
+.desc{
+    resize: none;
+}
+.moreProfile:hover {
+    background-color: rgba(228, 142, 30, 0);
+    border-color: rgba(240, 181, 105, 0);
+}
+
+.show>.moreProfile.dropdown-toggle {
+    background-color: rgba(228, 142, 30, 0);
+    border-color: rgba(240, 181, 105, 0);
+}
+
+.show>.moreProfile.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .2rem rgba(72, 180, 97, 0);
+}
 
 .logo {
     cursor: pointer;
@@ -65,12 +101,6 @@
     cursor: pointer;
     color: rgb(49, 49, 212);
 }
-.logoutLink {
-    font-size: 14px;
-    cursor: pointer;
-    color: rgb(49, 49, 212);
-    margin-right: 10px;
-}
 
 .topbarIcons {
     display: flex;
@@ -104,3 +134,47 @@
     object-fit: cover;
     cursor: pointer;
 }
+
+.profileLink {
+    color: rgb(49, 49, 212);
+}
+
+.profileLink:hover {
+    text-decoration: none;
+    color: rgb(49, 49, 212);
+}
+
+.autocom-box .userSearch {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 6px;
+    cursor: default;
+  }
+.userSearch:hover {
+      background-color: wheat;
+  }
+
+  .autocom-box {
+    background-color: white;
+    position: absolute;
+    top: 45px;
+    width: 30%;
+    height: auto;
+    margin-left: 30px;
+ }
+ .userSearchImg {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+ }
+ .userSearchLink {
+     text-decoration: none;
+     color: black;
+ }
+ .userSearchLink:hover {
+    text-decoration: none;
+}
+
+  

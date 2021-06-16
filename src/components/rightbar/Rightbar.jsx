@@ -1,5 +1,4 @@
 import "./rightbar.css";
-import { Users } from "../../dummyData";
 import Online from "../online/Online";
 import { useParams } from "react-router";
 import { useContext, useState, useEffect } from "react";
@@ -12,6 +11,7 @@ export default function Rightbar(currentUser) {
   const public_folder = process.env.REACT_APP_PUBLIC_FOLDER
   const params = useParams();
   const [friends, setFriends] = useState([]);
+  const [suggested, setSuggested] = useState([]);
   const [follow, setFollow] = useState([]);
   const { user } = useContext(AuthContext)
 
@@ -24,7 +24,20 @@ export default function Rightbar(currentUser) {
         setFriends(response.data.users)
       }
     }
-    fetchFriends();
+    const fetchSuggestedFriends = async () => {
+      const response = await axios.get(`http://api.local:9902/suggested-users/${user.type}/${user.email}`)
+      .catch(function (error){
+      });
+      if (typeof response !== 'undefined' && response.data.success === true) {
+        setSuggested(response.data.users)
+      }
+    }
+
+    if (params.type) {
+      fetchFriends();
+    } else {
+      fetchSuggestedFriends();
+    }
   }, []);
 
   const followCheck = async () => {
@@ -87,7 +100,7 @@ export default function Rightbar(currentUser) {
         <img className="rightbarAd" src={public_folder + "ad.png"} alt="" />
         <h4 className="rightbarTitle">Suggestions for you</h4>
         <ul className="rightbarFriendList">
-          {Users.map((u) => (
+          {suggested.map((u) => (
             <Online key={u.id} user={u} />
           ))}
         </ul>
@@ -96,7 +109,7 @@ export default function Rightbar(currentUser) {
   };
 
   const ProfileRightbar = () => {
-    followCheck()
+    followCheck();
     return (
       <>
         {(user.type !== params.type || user.id !== parseInt(params.userId)) ?

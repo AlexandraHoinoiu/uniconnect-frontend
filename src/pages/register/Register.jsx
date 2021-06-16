@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./register.css";
 import { useHistory } from "react-router";
 import { useParams } from "react-router";
@@ -16,6 +16,8 @@ export default function Register() {
   const firstName = useRef();
   const lastName = useRef();
   const nameSchool = useRef();
+  const [errorMsg, setErrorMsg] = useState('');
+
 
   const submit = async (e) => {
     e.preventDefault();
@@ -43,6 +45,8 @@ export default function Register() {
         const res = await axios.post("http://api.local:9901/signUp", user);
         if(res.data.success === true) {
           history.push("/login/" + params.type);
+        } else {
+          setErrorMsg(res.data.message)
         }
       } catch (err) {
         console.log(err);
@@ -154,6 +158,7 @@ export default function Register() {
             <Link to={`/login/${params.type}`} className="linkButton">
             <button className="loginRegisterButton">Log into Account</button>
             </Link>
+            <div className="text-danger">{errorMsg}</div>
           </form>
         </div>
       </div>

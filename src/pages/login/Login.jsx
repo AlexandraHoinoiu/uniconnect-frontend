@@ -1,5 +1,5 @@
 import "./login.css";
-import { useRef, useContext } from "react"
+import { useRef, useContext, useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
@@ -13,6 +13,8 @@ export default function Login() {
   const email = useRef()
   const password = useRef()
   const {isFetching, dispatch } = useContext(AuthContext);
+  const [errorMsg, setErrorMsg] = useState('');
+
 
   const submit = (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ export default function Login() {
         const res = await axios.post("http://api.local:9901/signIn", userCredential);
         if(res.data.success === false) {
           dispatch({ type: "LOGIN_FAILURE", payload: res.data.message });
+          setErrorMsg(res.data.message)
         } else {
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data });
         }
@@ -71,6 +74,7 @@ export default function Login() {
               )}
             </button>
             </Link>
+            <div className="text-danger">{errorMsg}</div>
           </form>
         </div>
       </div>
