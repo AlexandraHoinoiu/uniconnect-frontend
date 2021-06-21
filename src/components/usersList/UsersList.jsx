@@ -1,8 +1,8 @@
-import './online.css'
+import './usersList.css'
 import { Link } from "react-router-dom"
 
 
-export default function Online({ user }) {
+export default function UsersList({ user }) {
     const refreshPage = () => {
         setTimeout(() => {
           window.location.reload(false);
@@ -13,7 +13,6 @@ export default function Online({ user }) {
             <li className="rightbarFriend">
                 <div className="rightbarProfileImgContainer">
                     <img className="rightbarProfileImg" src={user.profileImg} alt="" />
-                    <span className="rightbarOnline"></span>
                 </div>
                 {user.type === 'Learner' ?
                     <span className="rightbarUsername">{user.firstName} {user.lastName}</span>

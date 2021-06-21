@@ -78,28 +78,37 @@ export default function Topbar() {
 
     const searchUser = () => {
         const value = searchTerm.current.value
-        setSearchContent(<CircularProgress size="40px" />)
-        setSearch(true)
-        setTimeout(() => {
-            if (value == searchTerm.current.value && value != '') {
-                const searchCall = async () => {
-                    const response = await axios.get("http://api.local:9904/search/" + value)
-                    if (response.data.success === true) {
-                        const html = response.data.users.map(element => (
-                            <Link to={`/profile/${element.type}/${element.id}`} onClick={refreshPage} key={element.id + element.type} className="userSearchLink">
-                                <div className="userSearch">
-                                    <img src={element.profileImg} alt="" className="userSearchImg" />
-                                    {element.hasOwnProperty('firstName') ? element.firstName + ' ' + element.lastName : element.name}
-                                </div>
-                            </Link>
-                        ))
-
-                        setSearchContent(html)
+        if (value != '') {
+            setSearchContent(<CircularProgress size="40px" />)
+            setSearch(true)
+            setTimeout(() => {
+                if (value == searchTerm.current.value) {
+                    const searchCall = async () => {
+                        const response = await axios.get("http://api.local:9904/search/" + value)
+                        if (response.data.success === true) {
+                            if(response.data.users.length !== 0) {
+                                const html = response.data.users.map(element => (
+                                    <Link to={`/profile/${element.type}/${element.id}`} onClick={refreshPage} key={element.id + element.type} className="userSearchLink">
+                                        <div className="userSearch">
+                                            <img src={element.profileImg} alt="" className="userSearchImg" />
+                                            {element.hasOwnProperty('firstName') ? element.firstName + ' ' + element.lastName : element.name}
+                                        </div>
+                                    </Link>
+                                ))
+        
+                                setSearchContent(html)
+                            } else {
+                                setSearchContent('No match was found for the specified search criteria')
+                            }
+                        }
                     }
+                    searchCall()
                 }
-                searchCall()
-            }
-        }, 600);
+            }, 400);
+        } else {
+            setSearchContent('')
+            setSearch(false)
+        }
     }
 
     const closeSearch = (event) => {

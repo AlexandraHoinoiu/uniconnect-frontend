@@ -81,6 +81,19 @@
     object-fit: cover;
     border-radius: 5px;
 }
+
+.rightbarFollowingName {
+    width: 100px;
+    word-break: keep-all;
+}
 .followButton {
     width: 50%;
+}
+
+.modalSuggested{
+    overflow-y: initial !important
+}
+.modalSuggestedBody {
+    height: 50vh;
+    overflow-y: auto;
 }

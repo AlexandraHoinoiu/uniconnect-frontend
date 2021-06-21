@@ -16,11 +16,14 @@ export default function Post({ post }) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [textInfoModal, setTextInfoModal] = useState('');
+  const [reportBody, setReportBody] = useState('');
   const public_folder = process.env.REACT_APP_PUBLIC_FOLDER
   const { user } = useContext(AuthContext)
-  const newText = useRef()
+  const newText = useRef();
+  let reportType;
 
 
   useEffect(() => {
@@ -86,11 +89,84 @@ export default function Post({ post }) {
     editCall(newText.current.value)
   }
 
+  const submitReport = (e) => {
+    setReportBody(<CircularProgress size="40px" />)
+    const call = async (reportType) => {
+      const respose = await axios.post("http://api.local:9901/reportPost", {
+        type: user.type,
+        userId: user.id,
+        postId: post.id,
+        reportType: reportType
+      });
+      if (respose.data.success === true) {
+        setReportBody('Thank you for your reporting!');
+      } else {
+        setTextInfoModal('Reporting could not be done.')
+        handleCloseReportModal();
+        setInfoModal(true);
+      }
+    }
+    call(reportType);
+  }
+
+  const handleShowReportModal = () => {
+    const html =
+      <div>
+        <div>
+          Why are you reporting this post?
+        </div>
+        <div onChange={getReportType}>
+          <div className="form-check">
+            <input className="form-check-input" type="radio" name="report" id="option1" value="Violence" />
+            <label className="form-check-label" htmlFor="option1">
+              Violence
+            </label>
+          </div>
+          <div className="form-check">
+            <input className="form-check-input" type="radio" name="report" id="option2" value="Sexual content" />
+            <label className="form-check-label" htmlFor="option2">
+              Sexual content
+            </label>
+          </div>
+          <div className="form-check">
+            <input className="form-check-input" type="radio" name="report" id="option3" value="Offensive content" />
+            <label className="form-check-label" htmlFor="option3">
+              Offensive content
+            </label>
+          </div>
+          <div className="form-check">
+            <input className="form-check-input" type="radio" name="report" id="option4" value="Spam" />
+            <label className="form-check-label" htmlFor="option4">
+              Spam
+            </label>
+          </div>
+          <div className="form-check">
+            <input className="form-check-input" type="radio" name="report" id="option5" value="False information" />
+            <label className="form-check-label" htmlFor="option5">
+              False information
+            </label>
+          </div>
+        </div>
+        <br />
+        <button className="btn btn-info" type='submit'  onClick={submitReport}>Submit</button>
+      </div>
+
+    setReportBody(html);
+    setReportModal(true);
+  }
+  const handleCloseReportModal = () => {
+    setReportModal(false);
+    setReportBody('');
+  }
+
   const handleCloseDeleteModal = () => setDeleteModal(false);
   const handleShowDeleteModal = () => setDeleteModal(true);
   const handleCloseInfoModal = () => setInfoModal(false);
   const handleCloseEditModal = () => setEditModal(false);
   const handleShowEditModal = () => setEditModal(true);
+  const getReportType = (e) => {
+    reportType = e.target.value;
+  }
 
   return (
     <div className="post">
@@ -127,7 +203,7 @@ export default function Post({ post }) {
                 </Dropdown.Menu>
                 :
                 <Dropdown.Menu>
-                  <Dropdown.Item> Report the post</Dropdown.Item>
+                  <Dropdown.Item onClick={handleShowReportModal}> Report the post</Dropdown.Item>
                 </Dropdown.Menu>
               }
             </Dropdown>
@@ -142,9 +218,6 @@ export default function Post({ post }) {
             <img className="likeIcon" src={public_folder + "like.png"} onClick={likeHandler} alt="" />
             <span className="postLikeCounter">{likes}</span>
           </div>
-          {/* <div className="postBottomRight">
-            <span className="postCommentText">{post.comment || 0} comments</span>
-          </div> */}
         </div>
       </div>
       <Modal show={deleteModal} onHide={handleCloseDeleteModal}>
@@ -187,6 +260,13 @@ export default function Post({ post }) {
           :
           <Modal.Body className="text-center"><CircularProgress size="40px" /></Modal.Body>
         }
+      </Modal>
+
+      <Modal show={reportModal} onHide={handleCloseReportModal}>
+        <Modal.Header closeButton><h4>Report the post</h4></Modal.Header>
+        <Modal.Body>
+          {reportBody}
+        </Modal.Body>
       </Modal>
 
       <Modal show={infoModal} onHide={handleCloseInfoModal}>

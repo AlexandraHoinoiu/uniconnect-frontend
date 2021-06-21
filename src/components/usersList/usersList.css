@@ -7,7 +7,6 @@
 .rightbarProfileImgContainer {
     margin-right: 10px;
     position: relative;
-    z-index: -5;
 }
 
 .rightbarProfileImg {
