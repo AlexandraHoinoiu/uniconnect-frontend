@@ -64,7 +64,7 @@ export default function Share() {
       newPost.fileName = fileName;
     }
     try{
-      const response = await axios.post("http://api.local:9901/createPost", newPost)
+      await axios.post("http://api.local:9901/createPost", newPost)
       window.location.reload()
     } catch(err) {
 

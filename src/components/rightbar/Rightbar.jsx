@@ -91,8 +91,8 @@ export default function Rightbar(currentUser) {
     const suggestedUsersCall = async () => {
       const response = await axios.get(`http://api.local:9902/suggested-users/${user.type}/${user.email}`)
       if (typeof response !== 'undefined' && response.data.success === true) {
-        const html = response.data.users.map((u) => (
-          <UsersList key={u.id} user={u} />
+        const html = response.data.users.map((u, index) => (
+          <UsersList key={index} user={u} />
         ))
         setModalbody(html)
       } else {
@@ -117,12 +117,12 @@ export default function Rightbar(currentUser) {
     setModalFollowersTitle(type.charAt(0).toUpperCase() + type.slice(1));
     setModalFollowersBody(<CircularProgress size="50px" />);
     setProfileFollowersModal(true);
-    if (type == 'following') {
+    if (type === 'following') {
       const call = async () => {
         const response = await axios.get(`http://api.local:9902/user-following/${params.type}/${params.userId}`);
         if (response.data.success === true) {
-          const html = response.data.users.map((u) => (
-            <UsersList key={u.id} user={u} />
+          const html = response.data.users.map((u, index) => (
+            <UsersList key={index} user={u} />
           ))
           setModalFollowersBody(html)
         }
@@ -132,8 +132,8 @@ export default function Rightbar(currentUser) {
       const call = async () => {
         const response = await axios.get(`http://api.local:9902/user-followers/${params.type}/${params.userId}`);
         if (response.data.success === true) {
-          const html = response.data.users.map((u) => (
-            <UsersList key={u.id} user={u} />
+          const html = response.data.users.map((u, index) => (
+            <UsersList key={index} user={u} />
           ))
           setModalFollowersBody(html)
         }
@@ -173,11 +173,11 @@ export default function Rightbar(currentUser) {
   const HomeRightbar = () => {
     return (
       <>
-        <img className="rightbarAd" src={public_folder + "ad.png"} alt="" />
+        <img className="rightbarAd" src={public_folder + "ad.jpg"} alt="" />
         <h4 className="rightbarTitle">Suggestions for you</h4>
         <ul className="rightbarFriendList">
-          {suggested.map((u) => (
-            <UsersList key={u.id} user={u} />
+          {suggested.map((u, index) => (
+            <UsersList key={index} user={u} />
           ))}
         </ul>
         {suggested.length === 10 ?
@@ -219,8 +219,9 @@ export default function Rightbar(currentUser) {
         <h4 className="rightbarTitle">Following</h4>
         <div className="rightbarFollowings">
           {following.map((friend, index) => (
+            <div key={'following' + index}>
             <Link to={`/profile/${friend.type}/${friend.id}`} onClick={refreshPage}>
-              <div className="rightbarFollowing" key={index}>
+              <div className="rightbarFollowing">
                 <img
                   src={friend.profileImg}
                   alt=""
@@ -231,19 +232,21 @@ export default function Rightbar(currentUser) {
                 </span>
               </div>
             </Link>
+            </div>
           ))}
         </div>
-          {following.length === limit ?
-            <button className="btn btn-outline-secondary" id="following" onClick={showFollowerModal}>
-              View More
-            </button> : ""
-          }
-        <br/><br/>
+        {following.length === limit ?
+          <button className="btn btn-outline-secondary" id="following" onClick={showFollowerModal}>
+            View More
+          </button> : ""
+        }
+        <br /><br />
         <h4 className="rightbarTitle">Followers</h4>
         <div className="rightbarFollowings">
           {followers.map((friend, index) => (
+            <div key={'followers' + index}>
             <Link to={`/profile/${friend.type}/${friend.id}`} onClick={refreshPage}>
-              <div className="rightbarFollowing" key={'f' + index}>
+              <div className="rightbarFollowing">
                 <img
                   src={friend.profileImg}
                   alt=""
@@ -254,13 +257,14 @@ export default function Rightbar(currentUser) {
                 </span>
               </div>
             </Link>
+            </div>
           ))}
         </div>
-          {followers.length === limit ?
-            <button className="btn btn-outline-secondary" id="followers" onClick={showFollowerModal}>
-              View More
-            </button> : ""
-          }
+        {followers.length === limit ?
+          <button className="btn btn-outline-secondary" id="followers" onClick={showFollowerModal}>
+            View More
+          </button> : ""
+        }
 
         <Modal show={profileFollowersModal} onHide={handleCloseProfileFollowersModal} className="modalSuggested">
           <Modal.Header closeButton>{modalFollowersTitle}</Modal.Header>

@@ -78,11 +78,11 @@ export default function Topbar() {
 
     const searchUser = () => {
         const value = searchTerm.current.value
-        if (value != '') {
+        if (value !== '') {
             setSearchContent(<CircularProgress size="40px" />)
             setSearch(true)
             setTimeout(() => {
-                if (value == searchTerm.current.value) {
+                if (value === searchTerm.current.value) {
                     const searchCall = async () => {
                         const response = await axios.get("http://api.local:9904/search/" + value)
                         if (response.data.success === true) {

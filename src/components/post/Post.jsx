@@ -12,7 +12,6 @@ export default function Post({ post }) {
   const [likes, setLikes] = useState(post.likes)
   const [text, setText] = useState(post.text)
   const [userPost, setUserPost] = useState({})
-  const [isLiked, setIsLiked] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
@@ -37,17 +36,10 @@ export default function Post({ post }) {
   }, [post.id])
 
   const likeHandler = async () => {
-    if (!isLiked) {
-      const response = await axios.get("http://api.local:9901/like/" + post.id);
+    const response = await axios.get("http://api.local:9901/like/" + post.id);
       if (response.data.success === true) {
         setLikes(likes + 1)
       }
-    } else {
-      const response = await axios.get("http://api.local:9901/remove-like/" + post.id);
-      if (response.data.success === true) {
-        setLikes(likes - 1)
-      }
-    }
   }
 
   const handleDeletePost = async () => {
