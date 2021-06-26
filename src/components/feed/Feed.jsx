@@ -39,6 +39,7 @@ export default function Feed({ userId, type, section }) {
   }
 
   useEffect(() => {
+    page = 1;
     fetchPosts();
   }, []);
 
@@ -57,7 +58,7 @@ export default function Feed({ userId, type, section }) {
     
         {loadMore ? 
             <button onClick={handleShowMorePosts} className="btn btn-outline-dark btn-lg">
-            Load more Posts
+            Load more posts
           </button>:
           <h4 className="text-info">No more posts! :( </h4>
           }

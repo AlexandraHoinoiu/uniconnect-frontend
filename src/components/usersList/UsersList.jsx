@@ -3,13 +3,8 @@ import { Link } from "react-router-dom"
 
 
 export default function UsersList({ user }) {
-    const refreshPage = () => {
-        setTimeout(() => {
-          window.location.reload(false);
-        }, 100);
-      }
     return (
-        <Link to={`/profile/${user.type}/${user.id}`} onClick={refreshPage}>
+        <Link to={`/profile/${user.type}/${user.id}`}>
             <li className="rightbarFriend">
                 <div className="rightbarProfileImgContainer">
                     <img className="rightbarProfileImg" src={user.profileImg} alt="" />

@@ -79,15 +79,7 @@ export default function Rightbar(currentUser) {
     }
   }
 
-  const refreshPage = () => {
-    setTimeout(() => {
-      window.location.reload(false);
-    }, 100);
-  }
-
   const showAllSuggestedUsers = () => {
-    setSuggestedUsersModal(true);
-    setModalbody(<CircularProgress size="40px" />)
     const suggestedUsersCall = async () => {
       const response = await axios.get(`http://api.local:9902/suggested-users/${user.type}/${user.email}`)
       if (typeof response !== 'undefined' && response.data.success === true) {
@@ -95,8 +87,11 @@ export default function Rightbar(currentUser) {
           <UsersList key={index} user={u} />
         ))
         setModalbody(html)
+        setSuggestedUsersModal(true);
+
       } else {
         setModalbody(response.data.message)
+        setSuggestedUsersModal(true);
       }
     }
     suggestedUsersCall();
@@ -220,7 +215,7 @@ export default function Rightbar(currentUser) {
         <div className="rightbarFollowings">
           {following.map((friend, index) => (
             <div key={'following' + index}>
-            <Link to={`/profile/${friend.type}/${friend.id}`} onClick={refreshPage}>
+            <Link to={`/profile/${friend.type}/${friend.id}`}>
               <div className="rightbarFollowing">
                 <img
                   src={friend.profileImg}
@@ -245,7 +240,7 @@ export default function Rightbar(currentUser) {
         <div className="rightbarFollowings">
           {followers.map((friend, index) => (
             <div key={'followers' + index}>
-            <Link to={`/profile/${friend.type}/${friend.id}`} onClick={refreshPage}>
+            <Link to={`/profile/${friend.type}/${friend.id}`}>
               <div className="rightbarFollowing">
                 <img
                   src={friend.profileImg}

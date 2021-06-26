@@ -11,7 +11,7 @@ import { Modal } from 'react-bootstrap'
 
 
 
-export default function Profile() {
+export default function Profile(pr) {
   const [profileUser, setProfileUser] = useState({})
   const params = useParams();
   const { user } = useContext(AuthContext)
@@ -24,6 +24,7 @@ export default function Profile() {
   const [infoModal, setInfoModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  console.log(pr)
 
   useEffect(() => {
     const fetchUser = async () => {

@@ -7,9 +7,6 @@ import { Dropdown, Modal } from 'react-bootstrap'
 import { CircularProgress } from "@material-ui/core";
 import axios from "axios"
 
-
-
-
 export default function Topbar() {
 
     const { user } = useContext(AuthContext)
@@ -30,11 +27,6 @@ export default function Topbar() {
     const logout = () => {
         localStorage.clear();
         window.location.reload()
-    }
-    const refreshPage = () => {
-        setTimeout(() => {
-            window.location.reload(false);
-        }, 200);
     }
 
     const handleEditProfile = (e) => {
@@ -88,7 +80,7 @@ export default function Topbar() {
                         if (response.data.success === true) {
                             if(response.data.users.length !== 0) {
                                 const html = response.data.users.map(element => (
-                                    <Link to={`/profile/${element.type}/${element.id}`} onClick={refreshPage} key={element.id + element.type} className="userSearchLink">
+                                    <Link to={`/profile/${element.type}/${element.id}`} key={element.id + element.type} className="userSearchLink">
                                         <div className="userSearch">
                                             <img src={element.profileImg} alt="" className="userSearchImg" />
                                             {element.hasOwnProperty('firstName') ? element.firstName + ' ' + element.lastName : element.name}
@@ -104,7 +96,7 @@ export default function Topbar() {
                     }
                     searchCall()
                 }
-            }, 400);
+            }, 300);
         } else {
             setSearchContent('')
             setSearch(false)
@@ -153,8 +145,8 @@ export default function Topbar() {
                         <span className="topbarLink">Homepage</span>
                     </Link>
                 </div>
-                <Link to={`/profile/${user.type}/${user.id}`} onClick={refreshPage} className="profileLink">
-                    {user.firstName} <img src={user.profileImg} alt="" className="topbarImg" />
+                <Link to={`/profile/${user.type}/${user.id}`} className="profileLink">
+                    {user.hasOwnProperty('firstName') ? user.firstName : user.name} <img src={user.profileImg} alt="" className="topbarImg" />
                 </Link>
                 <Dropdown>
                     <Dropdown.Toggle variant="secondary" id="dropdown" className="moreProfile">
