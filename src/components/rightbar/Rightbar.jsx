@@ -168,7 +168,9 @@ export default function Rightbar(currentUser) {
   const HomeRightbar = () => {
     return (
       <>
-        <img className="rightbarAd" src={public_folder + "ad.jpg"} alt="" />
+        <a href="https://www.coca-cola.ro/">
+          <img className="rightbarAd" src={public_folder + "ad.jpg"} alt="" />
+        </a>
         <h4 className="rightbarTitle">Suggestions for you</h4>
         <ul className="rightbarFriendList">
           {suggested.map((u, index) => (
@@ -215,18 +217,18 @@ export default function Rightbar(currentUser) {
         <div className="rightbarFollowings">
           {following.map((friend, index) => (
             <div key={'following' + index}>
-            <Link to={`/profile/${friend.type}/${friend.id}`}>
-              <div className="rightbarFollowing">
-                <img
-                  src={friend.profileImg}
-                  alt=""
-                  className="rightbarFollowingImg"
-                />
-                <span className="rightbarFollowingName">
-                  {friend.type === 'Learner' ? friend.firstName + " " + friend.lastName : friend.name}
-                </span>
-              </div>
-            </Link>
+              <Link to={`/profile/${friend.type}/${friend.id}`}>
+                <div className="rightbarFollowing">
+                  <img
+                    src={friend.profileImg}
+                    alt=""
+                    className="rightbarFollowingImg"
+                  />
+                  <span className="rightbarFollowingName">
+                    {friend.type === 'Learner' ? friend.firstName + " " + friend.lastName : friend.name}
+                  </span>
+                </div>
+              </Link>
             </div>
           ))}
         </div>
@@ -240,18 +242,18 @@ export default function Rightbar(currentUser) {
         <div className="rightbarFollowings">
           {followers.map((friend, index) => (
             <div key={'followers' + index}>
-            <Link to={`/profile/${friend.type}/${friend.id}`}>
-              <div className="rightbarFollowing">
-                <img
-                  src={friend.profileImg}
-                  alt=""
-                  className="rightbarFollowingImg"
-                />
-                <span className="rightbarFollowingName">
-                  {friend.type === 'Learner' ? friend.firstName + " " + friend.lastName : friend.name}
-                </span>
-              </div>
-            </Link>
+              <Link to={`/profile/${friend.type}/${friend.id}`}>
+                <div className="rightbarFollowing">
+                  <img
+                    src={friend.profileImg}
+                    alt=""
+                    className="rightbarFollowingImg"
+                  />
+                  <span className="rightbarFollowingName">
+                    {friend.type === 'Learner' ? friend.firstName + " " + friend.lastName : friend.name}
+                  </span>
+                </div>
+              </Link>
             </div>
           ))}
         </div>
