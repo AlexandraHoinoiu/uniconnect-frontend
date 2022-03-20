@@ -27,7 +27,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       const response =
-        await axios.get('http://api.local:9902/user/' + params.type + '/' + params.userId)
+        await axios.get('http://api.local:9900/profile/user/' + params.type + '/' + params.userId)
           .catch(function (error) {
           });
       if (typeof response !== 'undefined' && response.data.success === true) {
@@ -52,7 +52,7 @@ export default function Profile() {
 
   const savePhoto = async () => {
     setLoading(true)
-    const response = await axios.post("http://api.local:9902/user/changePhoto",
+    const response = await axios.post("http://api.local:9900/profile/user/changePhoto",
       {
         userId: user.id,
         type: user.type,

@@ -27,7 +27,7 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get("http://api.local:9901/post/user/" + post.id)
+      const response = await axios.get("http://api.local:9900/home/post/user/" + post.id)
       if (response.data.success === true) {
         setUserPost(response.data.user)
       }
@@ -36,7 +36,7 @@ export default function Post({ post }) {
   }, [post.id])
 
   const likeHandler = async () => {
-    const response = await axios.get("http://api.local:9901/like/" + post.id);
+    const response = await axios.get("http://api.local:9900/home/like/" + post.id);
       if (response.data.success === true) {
         setLikes(likes + 1)
       }
@@ -44,7 +44,7 @@ export default function Post({ post }) {
 
   const handleDeletePost = async () => {
     setLoading(true)
-    const response = await axios.post("http://api.local:9901/deletePost", { postId: post.id });
+    const response = await axios.post("http://api.local:9900/home/deletePost", { postId: post.id });
     if (response.data.success === true) {
       setLoading(false)
       setDeleteModal(false)
@@ -61,7 +61,7 @@ export default function Post({ post }) {
     e.preventDefault();
     setLoading(true)
     const editCall = async (newDesc) => {
-      const response = await axios.post("http://api.local:9901/editPost",
+      const response = await axios.post("http://api.local:9900/home/editPost",
         {
           postId: post.id,
           text: newDesc
@@ -84,7 +84,7 @@ export default function Post({ post }) {
   const submitReport = (e) => {
     setReportBody(<CircularProgress size="40px" />)
     const call = async (reportType) => {
-      const respose = await axios.post("http://api.local:9901/reportPost", {
+      const respose = await axios.post("http://api.local:9900/home/reportPost", {
         type: user.type,
         userId: user.id,
         postId: post.id,

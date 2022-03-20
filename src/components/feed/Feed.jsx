@@ -13,13 +13,13 @@ export default function Feed({ userId, type, section }) {
 
   const fetchPosts = async () => {
     const response = section === 'home'
-      ? await axios.post("http://api.local:9901/posts", {
+      ? await axios.post("http://api.local:9900/home/posts", {
         type: type,
         userId: userId,
         page: page
       }).catch(function (error) {
       })
-      : await axios.post("http://api.local:9902/posts", {
+      : await axios.post("http://api.local:9900/profile/posts", {
         type: type,
         userId: userId,
         page: page

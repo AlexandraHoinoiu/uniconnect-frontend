@@ -33,7 +33,7 @@ export default function Topbar() {
         e.preventDefault();
         setLoading(true)
         const editProfileCall = async (values) => {
-            const response = await axios.post("http://api.local:9902/user/editInfo", values)
+            const response = await axios.post("http://api.local:9900/profile/user/editInfo", values)
             if (response.data.success === true) {
                 setLoading(false)
                 localStorage.setItem("user", JSON.stringify(response.data.user))
@@ -76,7 +76,7 @@ export default function Topbar() {
             setTimeout(() => {
                 if (value === searchTerm.current.value) {
                     const searchCall = async () => {
-                        const response = await axios.get("http://api.local:9904/search/" + value)
+                        const response = await axios.get("http://api.local:9900/search/" + value)
                         if (response.data.success === true) {
                             if(response.data.users.length !== 0) {
                                 const html = response.data.users.map(element => (

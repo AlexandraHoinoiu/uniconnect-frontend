@@ -21,7 +21,7 @@ export default function Login() {
     const loginCall = async (userCredential, dispatch) => {
       dispatch({ type: "LOGIN_START" });
       try {
-        const res = await axios.post("http://api.local:9901/signIn", userCredential);
+        const res = await axios.post("http://api.local:9900/home/signIn", userCredential);
         if(res.data.success === false) {
           dispatch({ type: "LOGIN_FAILURE", payload: res.data.message });
           setErrorMsg(res.data.message)
@@ -33,7 +33,10 @@ export default function Login() {
       }
     };
     loginCall(
-      { email: email.current.value, password: password.current.value, type:params.type },
+      { email: email.current.value, 
+        password: password.current.value, 
+        type:params.type 
+      },
       dispatch
     );
   }

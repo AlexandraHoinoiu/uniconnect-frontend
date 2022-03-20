@@ -42,7 +42,7 @@ export default function Register() {
         };
       }
       try {
-        const res = await axios.post("http://api.local:9901/signUp", user);
+        const res = await axios.post("http://api.local:9900/home/signUp", user);
         if(res.data.success === true) {
           history.push("/login/" + params.type);
         } else {

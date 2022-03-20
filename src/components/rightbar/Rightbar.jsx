@@ -21,11 +21,11 @@ export default function Rightbar(currentUser) {
   const [modalFollowersBody, setModalFollowersBody] = useState('');
   const [suggestedUsersModal, setSuggestedUsersModal] = useState(false);
   const { user } = useContext(AuthContext)
-  const limit = 6;
+  const limit = 8;
 
   useEffect(() => {
     const fetchFollowing = async () => {
-      const response = await axios.get(`http://api.local:9902/user-following/${params.type}/${params.userId}/${limit}`)
+      const response = await axios.get(`http://api.local:9900/profile/user-following/${params.type}/${params.userId}/${limit}`)
         .catch(function (error) {
         });
       if (typeof response !== 'undefined' && response.data.success === true) {
@@ -34,7 +34,7 @@ export default function Rightbar(currentUser) {
     }
 
     const fetchFollowers = async () => {
-      const response = await axios.get(`http://api.local:9902/user-followers/${params.type}/${params.userId}/${limit}`)
+      const response = await axios.get(`http://api.local:9900/profile/user-followers/${params.type}/${params.userId}/${limit}`)
         .catch(function (error) {
         });
       if (typeof response !== 'undefined' && response.data.success === true) {
@@ -43,7 +43,7 @@ export default function Rightbar(currentUser) {
     }
 
     const fetchSuggestedFriends = async () => {
-      const response = await axios.get(`http://api.local:9902/suggested-users/${user.type}/${user.email}/10`)
+      const response = await axios.get(`http://api.local:9900/profile/suggested-users/${user.type}/${user.email}/10`)
         .catch(function (error) {
         });
       if (typeof response !== 'undefined' && response.data.success === true) {
@@ -60,7 +60,7 @@ export default function Rightbar(currentUser) {
   }, []);
 
   const followCheck = async () => {
-    const response = await axios.post(`http://api.local:9902/checkUserFollow`,
+    const response = await axios.post(`http://api.local:9900/profile/checkUserFollow`,
       {
         followerEmail: user.email,
         followedEmail: currentUser.user.email,
@@ -81,7 +81,7 @@ export default function Rightbar(currentUser) {
 
   const showAllSuggestedUsers = () => {
     const suggestedUsersCall = async () => {
-      const response = await axios.get(`http://api.local:9902/suggested-users/${user.type}/${user.email}`)
+      const response = await axios.get(`http://api.local:9900/profile/suggested-users/${user.type}/${user.email}/100`)
       if (typeof response !== 'undefined' && response.data.success === true) {
         const html = response.data.users.map((u, index) => (
           <UsersList key={index} user={u} />
@@ -114,7 +114,7 @@ export default function Rightbar(currentUser) {
     setProfileFollowersModal(true);
     if (type === 'following') {
       const call = async () => {
-        const response = await axios.get(`http://api.local:9902/user-following/${params.type}/${params.userId}`);
+        const response = await axios.get(`http://api.local:9900/profile/user-following/${params.type}/${params.userId}`);
         if (response.data.success === true) {
           const html = response.data.users.map((u, index) => (
             <UsersList key={index} user={u} />
@@ -125,7 +125,7 @@ export default function Rightbar(currentUser) {
       call();
     } else {
       const call = async () => {
-        const response = await axios.get(`http://api.local:9902/user-followers/${params.type}/${params.userId}`);
+        const response = await axios.get(`http://api.local:9900/profile/user-followers/${params.type}/${params.userId}`);
         if (response.data.success === true) {
           const html = response.data.users.map((u, index) => (
             <UsersList key={index} user={u} />
@@ -139,7 +139,7 @@ export default function Rightbar(currentUser) {
 
   const followHandler = async () => {
     if (follow === 'Follow') {
-      const response = await axios.post(`http://api.local:9902/follow`,
+      const response = await axios.post(`http://api.local:9900/profile/follow`,
         {
           followerEmail: user.email,
           followedEmail: currentUser.user.email,
@@ -151,7 +151,7 @@ export default function Rightbar(currentUser) {
         setFollow('Unfollow')
       }
     } else {
-      const response = await axios.post(`http://api.local:9902/unfollow`,
+      const response = await axios.post(`http://api.local:9900/profile/unfollow`,
         {
           followerEmail: user.email,
           followedEmail: currentUser.user.email,
